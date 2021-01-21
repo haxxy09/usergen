@@ -7,6 +7,8 @@ reader = csv.DictReader(open("test_users.csv"))
 users = []
 
 # TODO: Need to make sure the DHIS2 username and password are dynamic
+
+
 def getResource(name, key):
     try:
         req = requests.get('https://play.dhis2.org/2.35.1/api/{0}.json?paging=false'.format(name),
@@ -86,4 +88,6 @@ for row in reader:
     }
     users.append(user)
 
-createUsers(users)
+
+# TODO: This is the actual user creating part
+# createUsers(users)
