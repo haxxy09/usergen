@@ -1,0 +1,60 @@
+{
+  "users": [
+    {
+      "firstName": "John",
+      "surname": "Doe",
+      "userCredentials": {
+        "username": "johndoe123338",
+        "password": "Your-password-123",
+        "userRoles": [
+          {
+            "name": "M and E Officer"
+          }
+        ]
+      },
+      "organisationUnits": [
+        {
+          "id": "Rp268JB6Ne4"
+        }
+      ],
+      "dataViewOrganisationUnits": [
+        {
+          "id": "Rp268JB6Ne4"
+        }
+      ],
+      "userGroups": [
+        {
+          "name": "Malari program"
+        }
+      ]
+    },
+    {
+      "firstName": "John",
+      "surname": "Doe",
+      "userCredentials": {
+        "username": "johndoe133939",
+        "password": "Your-password-123",
+        "userRoles": [
+          {
+            "id": "Ufph3mGRmMo"
+          }
+        ]
+      },
+      "organisationUnits": [
+        {
+          "id": "Rp268JB6Ne4"
+        }
+      ],
+      "dataViewOrganisationUnits": [
+        {
+          "id": "Rp268JB6Ne4"
+        }
+      ],
+      "userGroups": [
+        {
+          "id": "wl5cDMuUhmF"
+        }
+      ]
+    }
+  ]
+}
