@@ -1,10 +1,14 @@
 import csv
 import requests
 from requests.auth import HTTPBasicAuth
+from dhis2 import generate_uid
+
 
 # always have a way of getting the file from
 reader = csv.DictReader(open("test_users.csv"))
 users = []
+userGroupsList = []
+uid = generate_uid()
 
 # TODO: Need to make sure the DHIS2 username and password are dynamic
 
@@ -17,7 +21,7 @@ def getResource(name, key):
         resources = data[key]
         return resources
     except Exception as e:
-        print('Could not resource {0}'.format(name))
+        print('Could not fetch resource {0}'.format(name))
         return []
 
 
@@ -45,6 +49,10 @@ def getUserGroups():
     return getResource('userGroups', 'userGroups')
 
 
+def getUserGroupUsers(id):
+    return getResource('userGroups'+'/{}'.format({id}), 'users')
+
+
 def getResourceId(name, resources):
     for resource in resources:
         if resource['displayName'] == name:
@@ -54,40 +62,59 @@ def getResourceId(name, resources):
 organisationUnits = getOrganisationUnits()
 userGroups = getUserGroups()
 userRoles = getUserRoles()
+# userGroupUsers = getUserGroupUsers()
 
-print(userGroups)
+# print(userGroupUsers)
 
-for row in reader:
-    user = {
-        "firstName": row['firstName'],
-        "surname": row['surname'],
-        "userCredentials": {
-            "username": row['username'],
-            "password": row['password'],
-            "userRoles": [
+
+def createUsersList():
+    for row in reader:
+        user = {
+            "id": uid,
+            "firstName": row['firstName'],
+            "surname": row['surname'],
+            "userCredentials": {
+                "username": row['username'],
+                "password": row['password'],
+                "userRoles": [
+                    {
+                        "id": getResourceId(row['userRoles'], userRoles)
+                    }
+                ]
+            },
+            "organisationUnits": [
                 {
-                    "id": getResourceId(row['userRoles'], userRoles)
+                    "id": getResourceId(row['organisationUnits'], organisationUnits)
+                }
+            ],
+            "dataViewOrganisationUnits": [
+                {
+                    "id": getResourceId(row['dataViewOrganisationUnits'], organisationUnits)
                 }
             ]
-        },
-        "organisationUnits": [
-            {
-                "id": getResourceId(row['organisationUnits'], organisationUnits)
-            }
-        ],
-        "dataViewOrganisationUnits": [
-            {
-                "id": getResourceId(row['dataViewOrganisationUnits'], organisationUnits)
-            }
-        ],
-        "userGroups": [
-            {
-                "id": getResourceId(row['userGroups'], userGroups)
-            }
-        ]
-    }
-    users.append(user)
+        }
+        users.append(user)
 
+
+createUsersList()
+
+
+def createUserGroups():
+    for row in reader:
+        for user in range(len(users)):
+            if user. == row["username"]:
+                userGroup = {
+                    "name": row["userGroups"],
+                    "id": getResourceId(row['userGroups'], userGroups),
+                    "users": [
+                        {"id": user["id"]}
+                    ]
+                }
+            userGroupsList.append(userGroup)
+
+
+createUserGroups()
+print(userGroupsList)
 
 # TODO: This is the actual user creating part
 # createUsers(users)

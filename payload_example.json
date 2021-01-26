@@ -1,14 +1,18 @@
 {
   "users": [
     {
+      "id": "fggccrKggxG",
       "firstName": "John",
       "surname": "Doe",
       "userCredentials": {
-        "username": "johndoe123338",
+        "username": "johndoe138",
         "password": "Your-password-123",
+        "userInfo": {
+          "id": "fggccrKggxG"
+        },
         "userRoles": [
           {
-            "name": "M and E Officer"
+            "id": "UYXOT4A7JMI"
           }
         ]
       },
@@ -24,16 +28,20 @@
       ],
       "userGroups": [
         {
-          "name": "Malari program"
+          "id": "tH0GcNZZ1vW"
         }
       ]
     },
     {
+      "id": "l8PVjGYIKwB",
       "firstName": "John",
       "surname": "Doe",
       "userCredentials": {
-        "username": "johndoe133939",
+        "username": "johndoe139",
         "password": "Your-password-123",
+        "userInfo": {
+          "id": "l8PVjGYIKwB"
+        },
         "userRoles": [
           {
             "id": "Ufph3mGRmMo"
@@ -49,10 +57,17 @@
         {
           "id": "Rp268JB6Ne4"
         }
-      ],
-      "userGroups": [
+      ]
+    }
+  ],
+  "userGroups": [
+    {
+      "name": "_DATASET_M and E Officer",
+      "id": "w900PX10L7O",
+      "users": [
         {
-          "id": "wl5cDMuUhmF"
+          "id": "fggccrKggxG",
+          "id": "l8PVjGYIKwB"
         }
       ]
     }
