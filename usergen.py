@@ -1,16 +1,32 @@
 import csv
 import requests
 from requests.auth import HTTPBasicAuth
-from dhis2 import generate_uid
+# from dhis2 import generate_uid
 
 
 # always have a way of getting the file from
 reader = csv.DictReader(open("test_users.csv"))
-users = []
-userGroupsList = []
-uid = generate_uid()
 
-# TODO: Need to make sure the DHIS2 username and password are dynamic
+
+def generate_ids(count):
+    try:
+        req = requests.get('https://play.dhis2.org/2.35.1/api/system/id.json?limit={0}'.format(count),
+                           auth=HTTPBasicAuth('admin', 'district'))
+        data = req.json()
+        return data['codes']
+    except:
+        return []
+
+
+def get_users_for_group(group_id):
+    try:
+        req = requests.get('https://play.dhis2.org/2.35.1/api/userGroups/{0}.json'.format(group_id),
+                           auth=HTTPBasicAuth('admin', 'district'))
+        data = req.json()
+        return data['users']
+    except Exception as e:
+        print('Could not fetch users for group id {0}'.format(group_id))
+        return ''
 
 
 def getResource(name, key):
@@ -62,59 +78,52 @@ def getResourceId(name, resources):
 organisationUnits = getOrganisationUnits()
 userGroups = getUserGroups()
 userRoles = getUserRoles()
-# userGroupUsers = getUserGroupUsers()
 
-# print(userGroupUsers)
+total_users = sum(1 for r in reader)
+user_ids = generate_ids(total_users)
+
+userGroups = []
 
 
-def createUsersList():
+def create_user_list():
+    users = []
     for row in reader:
-        user = {
-            "id": uid,
-            "firstName": row['firstName'],
-            "surname": row['surname'],
-            "userCredentials": {
-                "username": row['username'],
-                "password": row['password'],
-                "userRoles": [
-                    {
-                        "id": getResourceId(row['userRoles'], userRoles)
-                    }
-                ]
-            },
-            "organisationUnits": [
-                {
-                    "id": getResourceId(row['organisationUnits'], organisationUnits)
-                }
-            ],
-            "dataViewOrganisationUnits": [
-                {
-                    "id": getResourceId(row['dataViewOrganisationUnits'], organisationUnits)
-                }
-            ]
-        }
-        users.append(user)
+        print(row)
+        # for index, row in enumerate(reader):
+        #     print('Index ' + str(index))
+        #     user = {
+        #         "id": user_ids[index],
+        #         "firstName": row['firstName'],
+        #         "surname": row['surname'],
+        #         "userCredentials": {
+        #             "username": row['username'],
+        #             "password": row['password'],
+        #             "userRoles": [
+        #                 {
+        #                     "id": getResourceId(row['userRoles'], userRoles)
+        #                 }
+        #             ]
+        #         },
+        #         "organisationUnits": [
+        #             {
+        #                 "id": getResourceId(row['organisationUnits'], organisationUnits)
+        #             }
+        #         ],
+        #         "dataViewOrganisationUnits": [
+        #             {
+        #                 "id": getResourceId(row['dataViewOrganisationUnits'], organisationUnits)
+        #             }
+        #         ]
+        #     }
+        #     users.append(user)
+        # return users
+
+# Testing
 
 
-createUsersList()
+# _users = get_users_for_group('wl5cDMuUhmF')
+# print(_users)
 
-
-def createUserGroups():
-    for row in reader:
-        for user in range(len(users)):
-            if user. == row["username"]:
-                userGroup = {
-                    "name": row["userGroups"],
-                    "id": getResourceId(row['userGroups'], userGroups),
-                    "users": [
-                        {"id": user["id"]}
-                    ]
-                }
-            userGroupsList.append(userGroup)
-
-
-createUserGroups()
-print(userGroupsList)
-
-# TODO: This is the actual user creating part
 # createUsers(users)
+
+create_user_list()
