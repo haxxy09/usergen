@@ -1,11 +1,10 @@
 import csv
 import requests
 from requests.auth import HTTPBasicAuth
-# from dhis2 import generate_uid
 
 
 # always have a way of getting the file from
-reader = csv.DictReader(open("test_users.csv"))
+reader = tuple(csv.DictReader(open("test_users.csv")))
 
 
 def generate_ids(count):
@@ -83,42 +82,59 @@ total_users = sum(1 for r in reader)
 user_ids = generate_ids(total_users)
 
 userGroups = []
+users = []
+
+payload = {}
 
 
-def create_user_list():
-    users = []
-    for row in reader:
-        print(row)
-        # for index, row in enumerate(reader):
-        #     print('Index ' + str(index))
-        #     user = {
-        #         "id": user_ids[index],
-        #         "firstName": row['firstName'],
-        #         "surname": row['surname'],
-        #         "userCredentials": {
-        #             "username": row['username'],
-        #             "password": row['password'],
-        #             "userRoles": [
-        #                 {
-        #                     "id": getResourceId(row['userRoles'], userRoles)
-        #                 }
-        #             ]
-        #         },
-        #         "organisationUnits": [
-        #             {
-        #                 "id": getResourceId(row['organisationUnits'], organisationUnits)
-        #             }
-        #         ],
-        #         "dataViewOrganisationUnits": [
-        #             {
-        #                 "id": getResourceId(row['dataViewOrganisationUnits'], organisationUnits)
-        #             }
-        #         ]
-        #     }
-        #     users.append(user)
-        # return users
+def create_user_list(entries):
+    for row in entries:
+        for index, row in enumerate(reader):
+            user_id = user_ids[index]
+            user = {
+                "id": user_id,
+                "firstName": row['firstName'],
+                "surname": row['surname'],
+                "userCredentials": {
+                    "username": row['username'],
+                    "password": row['password'],
+                    "userRoles": [
+                        {
+                            "id": getResourceId(row['userRoles'], userRoles)
+                        }
+                    ]
+                },
+                "organisationUnits": [
+                    {
+                        "id": getResourceId(row['organisationUnits'], organisationUnits)
+                    }
+                ],
+                "dataViewOrganisationUnits": [
+                    {
+                        "id": getResourceId(row['dataViewOrganisationUnits'], organisationUnits)
+                    }
+                ]
+            }
+
+            users.append(user)
+            user_group_id = getResourceId(row['userGroups'], userGroups)
+            users_in_group = get_users_for_group(user_group_id)
+
+            _users = [{"id": user_id}]
+
+            for _user in users_in_group:
+                _users.append(_user)
+
+            userGroup = {
+                "name": row["userGroups"],
+                "id": user_group_id,
+                "users": _users
+            }
 
 # Testing
+
+
+print(payload)
 
 
 # _users = get_users_for_group('wl5cDMuUhmF')
@@ -126,4 +142,7 @@ def create_user_list():
 
 # createUsers(users)
 
-create_user_list()
+
+if __name__ == '__main__':
+    print('main file')
+    print(create_user_list(reader))
