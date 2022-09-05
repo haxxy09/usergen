@@ -1,3 +1,9 @@
 {
-  "python.pythonPath": "/usr/local/bin/python3"
+  "python.pythonPath": "/usr/local/bin/python3",
+  "cSpell.words": [
+    "chunksize",
+    "coloredlogs",
+    "DHIS",
+    "levelname"
+  ]
 }

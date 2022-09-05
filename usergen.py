@@ -1,6 +1,5 @@
 import csv
 import requests
-import json
 from requests.auth import HTTPBasicAuth
 from dotenv import dotenv_values
 
@@ -125,19 +124,20 @@ def create_user_list(entries):
                 "userRoles": [
                     {
                         "id": get_resource_id(row['userRoles'], user_roles)
+
                     }
                 ]
-            },
-            "organisationUnits": [
-                {
-                    "id": get_resource_id(row['organisationUnits'], organisation_units)
-                }
-            ],
-            "dataViewOrganisationUnits": [
-                {
-                    "id": get_resource_id(row['dataViewOrganisationUnits'], organisation_units)
-                }
-            ]
+            }
+            # "organisationUnits": [
+            #     {
+            #         "id": get_resource_id(row['organisationUnits'], organisation_units)
+            #     }
+            # ],
+            # "dataViewOrganisationUnits": [
+            #     {
+            #         "id": get_resource_id(row['dataViewOrganisationUnits'], organisation_units)
+            #     }
+            # ]
         }
 
         user_group_combo = {
